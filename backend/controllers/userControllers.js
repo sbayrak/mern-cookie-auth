@@ -3,6 +3,26 @@ import bcrypt from 'bcryptjs';
 import User from '../models/userModel.js';
 import generateToken from '../utils/generateToken.js';
 
+// desc     Log in the user
+// route    /api/users/login
+// access   Public
+const login = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+
+  const isExists = await User.find({ email });
+  if (!isExists) {
+    res.status(401);
+    throw new Error('Invalid e-mail or password');
+  }
+
+  const user = await User.find({ email });
+
+  const token = generateToken(user._id);
+  res.cookie('auth', token, { httpOnly: true, maxAge: 1000 * 60 * 60 * 5 });
+
+  res.json(user);
+});
+
 // desc     Register User
 // route    /api/users/register
 // access   Public
@@ -43,8 +63,13 @@ const register = asyncHandler(async (req, res) => {
 const getUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id);
 
+  if (!user) {
+    res.status(404);
+    throw new Error('User is not found');
+  }
+
+  res.status(201);
   res.json(user);
-  console.log(req.cookies);
 });
 
-export { register, getUser };
+export { register, getUser, login };

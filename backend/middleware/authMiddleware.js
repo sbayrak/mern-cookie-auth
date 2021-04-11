@@ -16,7 +16,7 @@ const protect = async (req, res, next) => {
 
     next();
   } catch (err) {
-    res.clearCookie('Bearer');
+    res.clearCookie('auth');
     res.status(401);
     throw new Error('Not authorized, token failed');
   }
