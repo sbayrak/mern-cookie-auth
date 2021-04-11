@@ -6,6 +6,8 @@ const app = express();
 dotenv.config();
 import cookieParser from 'cookie-parser';
 import userRoutes from './routes/userRoutes.js';
+import cors from 'cors';
+app.use(cors());
 
 connectDB();
 app.use(cookieParser());
@@ -13,6 +15,7 @@ app.use(express.json());
 
 app.get('/', (req, res) => {
   res.send('hi');
+  console.log(req.cookies);
 });
 
 app.use('/api/users', userRoutes);

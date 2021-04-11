@@ -30,7 +30,7 @@ const register = asyncHandler(async (req, res) => {
     maxAge: 1000 * 60 * 60 * 24 * 3, // 3 dayss
   });
 
-  res.status(201);
+  res.status(200);
 
   res.json({
     _id: user._id,
@@ -40,4 +40,11 @@ const register = asyncHandler(async (req, res) => {
   });
 });
 
-export { register };
+const getUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user.id);
+
+  res.json(user);
+  console.log(req.cookies);
+});
+
+export { register, getUser };
