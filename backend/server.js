@@ -5,6 +5,7 @@ import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 const app = express();
 dotenv.config();
 import cookieParser from 'cookie-parser';
+import userRoutes from './routes/userRoutes.js';
 
 connectDB();
 app.use(cookieParser());
@@ -13,6 +14,8 @@ app.use(express.json());
 app.get('/', (req, res) => {
   res.send('hi');
 });
+
+app.use('/api/users', userRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
