@@ -12,15 +12,21 @@ const login = asyncHandler(async (req, res) => {
   const isExists = await User.find({ email });
   if (!isExists) {
     res.status(401);
+    res.clearCookie('auth', { httpOnly: true });
     throw new Error('Invalid e-mail or password');
   }
 
-  const user = await User.find({ email });
+  const user = await User.findOne({ email });
 
   const token = generateToken(user._id);
   res.cookie('auth', token, { httpOnly: true, maxAge: 1000 * 60 * 60 * 5 });
 
-  res.json(user);
+  res.json({
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    isAdmin: user.isAdmin,
+  });
 });
 
 // desc     Register User
@@ -61,15 +67,22 @@ const register = asyncHandler(async (req, res) => {
 });
 
 const getUser = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user.id);
-
-  if (!user) {
-    res.status(404);
-    throw new Error('User is not found');
+  if (!req.cookies['auth']) {
+    res.clearCookie('auth');
+    res.status(401);
+    throw new Error('Not authorized');
+  } else if (!req.user) {
+    res.status(400);
+    throw new Error('User not found');
   }
-
+  // user is added to req object by authMiddleWare
   res.status(201);
-  res.json(user);
+  res.json({
+    _id: req.user._id,
+    name: req.user.name,
+    email: req.user.email,
+    isAdmin: req.user.isAdmin,
+  });
 });
 
 export { register, getUser, login };

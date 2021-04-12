@@ -4,8 +4,6 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 const Home = () => {
-  const [userInfo, setUserInfo] = useState('');
-
   useEffect(() => {});
 
   return (

@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from './actions/userActions';
 import {
   Typography,
   Container,
@@ -7,10 +9,20 @@ import {
   Button,
 } from '@material-ui/core';
 
-const Login = () => {
+const Login = ({ history }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
+  if (userInfo) {
+    history.push('/');
+  }
+
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log('Login!');
+    dispatch(login({ email, password }));
   };
   return (
     <>
@@ -19,16 +31,25 @@ const Login = () => {
           <Grid item>
             <Grid item>
               <Typography>E-mail</Typography>
-              <TextField variant='outlined'></TextField>
+              <TextField
+                variant='outlined'
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              ></TextField>
             </Grid>
             <Grid item>
               <Typography>Password</Typography>
-              <TextField variant='outlined'></TextField>
+              <TextField
+                variant='outlined'
+                type='password'
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              ></TextField>
             </Grid>
             <Grid item>
               <Button type='submit'>Submit</Button>
             </Grid>
-          </Grid>{' '}
+          </Grid>
         </form>
       </Container>
     </>
