@@ -15,10 +15,8 @@ function App() {
   const { userInfo: userInfoDetails } = userDetails;
 
   useEffect(() => {
-    if (!userInfo || !userInfoDetails) {
-      dispatch(loadUser());
-    }
-  }, [dispatch, userInfoDetails, userInfo]);
+    dispatch(loadUser());
+  }, [dispatch]);
 
   return (
     <Router>
