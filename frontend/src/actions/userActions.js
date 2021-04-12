@@ -23,8 +23,9 @@ export const loadUser = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_DETAILS_FAIL,
-      payload: error,
+      payload: error.response.data.message,
     });
+    console.log(error);
   }
 };
 
@@ -48,7 +49,7 @@ export const login = ({ email, password }) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAIL,
-      payload: error,
+      payload: error.response.data.message,
     });
   }
 };

@@ -18,7 +18,7 @@ function App() {
     if (!userInfo || !userInfoDetails) {
       dispatch(loadUser());
     }
-  }, []);
+  }, [dispatch, userInfoDetails, userInfo]);
 
   return (
     <Router>

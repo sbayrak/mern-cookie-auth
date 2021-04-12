@@ -75,7 +75,6 @@ const getUser = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error('User not found');
   }
-  // user is added to req object by authMiddleWare
   res.status(201);
   res.json({
     _id: req.user._id,
