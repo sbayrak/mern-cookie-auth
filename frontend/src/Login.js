@@ -13,8 +13,8 @@ const Login = ({ history }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
+  const userDetails = useSelector((state) => state.userDetails);
+  const { userInfo } = userDetails;
 
   if (userInfo) {
     history.push('/');
